@@ -4,7 +4,7 @@
   "private": true,
   "dependencies": {
     "@aztec/barretenberg": "file:../aztec-connect",
-    "@noir-lang/aztec_backend": "0.11.0",
+    "@noir-lang/aztec_backend": "github:kobyhallx/aztec-backend#2bdf900c96af4895815253d00b9a25f7f55b1b15",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
