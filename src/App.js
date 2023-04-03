@@ -37,7 +37,7 @@ function App() {
         const serializedCircuit = serialize_acir_to_barretenberg_circuit(acir_bytes);
 
         const [turboProver, turboVerifier] = await setupTurboProverAndVerifier(serializedCircuit, pk, vk);
-        
+
       }
     }
 
