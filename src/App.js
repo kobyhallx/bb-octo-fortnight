@@ -4,8 +4,7 @@ import { enableLogs } from '@aztec/barretenberg/log';
 import {
   setupTurboProverAndVerifier
 } from "@aztec/barretenberg";
-import initAztecBackend, { serialise_acir_to_barrtenberg_circuit } from '@noir-lang/aztec_backend';
-
+import initAztecBackend, { serialize_acir_to_barretenberg_circuit } from '@noir-lang/aztec_backend_wasm';
 
 import './App.css';
 
@@ -26,16 +25,19 @@ function App() {
         let acir_bytes = new Uint8Array(Buffer.from(circuitJson.circuit, "hex"));
 
         await initAztecBackend();
-        const serializedCircuit = serialise_acir_to_barrtenberg_circuit(acir_bytes);
 
         const pk_arrayBuffer = await fetch(new URL('../circuit/target/circuit.pk', import.meta.url)).then(r => r.blob()).then(pk_blob => pk_blob.arrayBuffer());
         const vk_arraybuffer = await fetch(new URL('../circuit/target/circuit.vk', import.meta.url)).then(r => r.blob()).then(vk_blob => vk_blob.arrayBuffer());
+        const witness_arrayBuffer = await fetch(new URL('../circuit/target/circuit.tr', import.meta.url)).then(r => r.blob()).then(blob => blob.arrayBuffer());
 
         let pk = new Uint8Array(pk_arrayBuffer);
         let vk = new Uint8Array(vk_arraybuffer);
-        console.log(serializedCircuit, pk, vk)
-        setupTurboProverAndVerifier(serializedCircuit, pk, vk);
+        let witness = new Uint8Array(witness_arrayBuffer);
 
+        const serializedCircuit = serialize_acir_to_barretenberg_circuit(acir_bytes);
+
+        const [turboProver, turboVerifier] = await setupTurboProverAndVerifier(serializedCircuit, pk, vk);
+        
       }
     }
 
