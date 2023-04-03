@@ -4,7 +4,7 @@ import { enableLogs } from '@aztec/barretenberg/log';
 import {
   setupTurboProverAndVerifier
 } from "@aztec/barretenberg";
-import initAztecBackend, { serialise_acir_to_barrtenberg_circuit } from '@noir-lang/aztec_backend';
+import initAztecBackend, { serialize_acir_to_barretenberg_circuit } from '@noir-lang/aztec_backend';
 
 
 import './App.css';
@@ -26,7 +26,7 @@ function App() {
         let acir_bytes = new Uint8Array(Buffer.from(circuitJson.circuit, "hex"));
 
         await initAztecBackend();
-        const serializedCircuit = serialise_acir_to_barrtenberg_circuit(acir_bytes);
+        const serializedCircuit = serialize_acir_to_barretenberg_circuit(acir_bytes);
 
         const pk_arrayBuffer = await fetch(new URL('../circuit/target/circuit.pk', import.meta.url)).then(r => r.blob()).then(pk_blob => pk_blob.arrayBuffer());
         const vk_arraybuffer = await fetch(new URL('../circuit/target/circuit.vk', import.meta.url)).then(r => r.blob()).then(vk_blob => vk_blob.arrayBuffer());
