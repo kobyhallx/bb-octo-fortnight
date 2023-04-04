@@ -2,7 +2,7 @@ import { useRef, useState, useEffect } from 'react';
 
 import { enableLogs } from '@aztec/barretenberg/log';
 import {
-  setupTurboProverAndVerifier
+  setupUltraProverAndVerifier
 } from "@aztec/barretenberg";
 import initAztecBackend, { serialize_acir_to_barretenberg_circuit, decompress_witness_map } from '@noir-lang/aztec_backend_wasm';
 
@@ -35,17 +35,17 @@ function App() {
         const witness = new Uint8Array(witness_arrayBuffer);
 
         const serializedCircuit = serialize_acir_to_barretenberg_circuit(acir_bytes);
-        const [turboProver, turboVerifier] = await setupTurboProverAndVerifier(serializedCircuit, pk, vk);
+        const [ultraProver, ultraVerifier] = await setupUltraProverAndVerifier(serializedCircuit, pk, vk);
 
         // BB expects a decompressed format of the witness map.
         const decompressed_witness = decompress_witness_map(witness, acir_bytes)
 
         // TODO: change this interface to return public-inputs and proof separately.
-        const proof = await turboProver.createProof(decompressed_witness)
+        const proof = await ultraProver.createProof(decompressed_witness)
         console.log("proof", proof)
 
         // TODO: change this interface to accept public-inputs and proof separately.
-        const verified = await turboVerifier.verifyProof(proof);
+        const verified = await ultraVerifier.verifyProof(proof);
         console.log("verified", verified)
       }
     }
